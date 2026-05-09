@@ -3585,6 +3585,10 @@ describe("runCodexAppServerAttempt", () => {
       "features.codex_hooks": true,
       "hooks.PreToolUse": [],
     };
+    const expectedConfig = {
+      ...config,
+      "features.code_mode": true,
+    };
 
     await startOrResumeThread({
       client: { request } as never,
@@ -3605,8 +3609,8 @@ describe("runCodexAppServerAttempt", () => {
 
     const requestCalls = request.mock.calls as unknown as Array<[string, { config?: unknown }]>;
     expect(requestCalls.map(([method]) => method)).toEqual(["thread/start", "thread/resume"]);
-    expect(requestCalls[0]?.[1].config).toEqual(config);
-    expect(requestCalls[1]?.[1].config).toEqual(config);
+    expect(requestCalls[0]?.[1].config).toEqual(expectedConfig);
+    expect(requestCalls[1]?.[1].config).toEqual(expectedConfig);
   });
 
   it("merges native hook relay config with plugin app config when starting a thread", async () => {
@@ -3650,6 +3654,7 @@ describe("runCodexAppServerAttempt", () => {
     expect(requestCalls.map(([method]) => method)).toEqual(["thread/start"]);
     expect(requestCalls[0]?.[1].config).toEqual({
       "features.codex_hooks": true,
+      "features.code_mode": true,
       hooks: { PreToolUse: [] },
       ...createPluginAppConfigPatch(),
     });
@@ -3715,9 +3720,13 @@ describe("runCodexAppServerAttempt", () => {
     expect(requestCalls.map(([method]) => method)).toEqual(["thread/start", "thread/resume"]);
     expect(requestCalls[0]?.[1].config).toEqual({
       "features.codex_hooks": true,
+      "features.code_mode": true,
       ...createPluginAppConfigPatch(),
     });
-    expect(requestCalls[1]?.[1].config).toEqual({ "features.codex_hooks": true });
+    expect(requestCalls[1]?.[1].config).toEqual({
+      "features.codex_hooks": true,
+      "features.code_mode": true,
+    });
   });
 
   it("starts a new plugin app thread when full binding revalidation removes an app", async () => {
@@ -3773,6 +3782,7 @@ describe("runCodexAppServerAttempt", () => {
     const requestCalls = request.mock.calls as unknown as Array<[string, { config?: unknown }]>;
     expect(requestCalls.map(([method]) => method)).toEqual(["thread/start"]);
     expect(requestCalls[0]?.[1].config).toEqual({
+      "features.code_mode": true,
       apps: {
         _default: {
           enabled: false,
@@ -3875,7 +3885,10 @@ describe("runCodexAppServerAttempt", () => {
     expect(buildPluginThreadConfig).toHaveBeenCalledTimes(1);
     const requestCalls = request.mock.calls as unknown as Array<[string, { config?: unknown }]>;
     expect(requestCalls.map(([method]) => method)).toEqual(["thread/start"]);
-    expect(requestCalls[0]?.[1].config).toEqual(createPluginAppConfigPatch());
+    expect(requestCalls[0]?.[1].config).toEqual({
+      ...createPluginAppConfigPatch(),
+      "features.code_mode": true,
+    });
     const binding = await readCodexAppServerBinding(sessionFile);
     expect(binding?.threadId).toBe("thread-recovered");
     expect(binding?.pluginAppsFingerprint).toBe("plugin-apps-config-1");
@@ -3980,7 +3993,10 @@ describe("runCodexAppServerAttempt", () => {
     expect(buildPluginThreadConfig).toHaveBeenCalledTimes(1);
     const requestCalls = request.mock.calls as unknown as Array<[string, { config?: unknown }]>;
     expect(requestCalls.map(([method]) => method)).toEqual(["thread/start"]);
-    expect(requestCalls[0]?.[1].config).toEqual(createTwoPluginAppConfigPatch());
+    expect(requestCalls[0]?.[1].config).toEqual({
+      ...createTwoPluginAppConfigPatch(),
+      "features.code_mode": true,
+    });
     const binding = await readCodexAppServerBinding(sessionFile);
     expect(binding?.threadId).toBe("thread-recovered");
     expect(binding?.pluginAppsFingerprint).toBe("plugin-apps-config-2");
@@ -4036,7 +4052,10 @@ describe("runCodexAppServerAttempt", () => {
     expect(buildPluginThreadConfig).toHaveBeenCalledTimes(1);
     const requestCalls = request.mock.calls as unknown as Array<[string, { config?: unknown }]>;
     expect(requestCalls.map(([method]) => method)).toEqual(["thread/start"]);
-    expect(requestCalls[0]?.[1].config).toEqual(createTwoCalendarAppConfigPatch());
+    expect(requestCalls[0]?.[1].config).toEqual({
+      ...createTwoCalendarAppConfigPatch(),
+      "features.code_mode": true,
+    });
     const binding = await readCodexAppServerBinding(sessionFile);
     expect(binding?.threadId).toBe("thread-recovered");
     expect(binding?.pluginAppsFingerprint).toBe("plugin-apps-config-calendar-2");
@@ -4079,7 +4098,10 @@ describe("runCodexAppServerAttempt", () => {
 
     const requestCalls = request.mock.calls as unknown as Array<[string, { config?: unknown }]>;
     expect(requestCalls.map(([method]) => method)).toEqual(["thread/start"]);
-    expect(requestCalls[0]?.[1].config).toEqual(createPluginAppConfigPatch());
+    expect(requestCalls[0]?.[1].config).toEqual({
+      ...createPluginAppConfigPatch(),
+      "features.code_mode": true,
+    });
     const binding = await readCodexAppServerBinding(sessionFile);
     expect(binding?.threadId).toBe("thread-plugins");
     expect(binding?.pluginAppsFingerprint).toBe("plugin-apps-config-1");
