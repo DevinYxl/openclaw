@@ -227,3 +227,10 @@ extensions/**/.openclaw-runtime-deps-stamp.json
 /.opengrep-out/
 /.crabbox-artifacts
 .comux*
+extensions/canvas/src/host/a2ui/.bundle.hash
+
+# Custom deployment secrets (tracked as templates only)
+custom/config/openclaw.json
+custom/agents/*/agent/auth-profiles.json
+custom/agents/*/agent/models.json
+custom/dist-patches/

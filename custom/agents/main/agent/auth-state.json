@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "lastGood": {
+    "minimax-portal": "minimax-portal:default",
+    "xiaomi": "xiaomi:default",
+    "qwen": "qwen:default",
+    "volcengine-plan": "volcengine-plan:default",
+    "volcengine": "volcengine-plan:default"
+  },
+  "usageStats": {
+    "minimax-portal:default": {
+      "errorCount": 0,
+      "lastUsed": 1777376511737,
+      "lastFailureAt": 1777359973309
+    },
+    "xiaomi:default": {
+      "errorCount": 1,
+      "lastFailureAt": 1778033242654,
+      "lastUsed": 1777553057446,
+      "failureCounts": {
+        "auth": 1
+      },
+      "cooldownUntil": 1778033272654,
+      "cooldownReason": "auth"
+    },
+    "qwen:default": {
+      "errorCount": 0,
+      "lastUsed": 1778398149248,
+      "lastFailureAt": 1778322603952
+    },
+    "volcengine-plan:default": {
+      "errorCount": 1,
+      "lastUsed": 1778396038493,
+      "lastFailureAt": 1778398109050,
+      "failureCounts": {
+        "rate_limit": 1
+      },
+      "cooldownUntil": 1778398139050,
+      "cooldownReason": "rate_limit",
+      "cooldownModel": "kimi-k2.6"
+    }
+  }
+}
